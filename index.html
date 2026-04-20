@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App Store</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+ margin:0;
+ font-family:'Poppins',sans-serif;
+ background:#0f172a;
+ color:#fff;
+ max-width:480px;
+ margin:auto;
+}
+
+/* HEADER */
+header{
+ padding:15px;
+ background:linear-gradient(90deg,#2563eb,#7c3aed);
+ border-bottom-left-radius:20px;
+ border-bottom-right-radius:20px;
+}
+
+.logo{
+ font-weight:600;
+ font-size:18px;
+}
+
+/* SEARCH */
+.search{
+ margin-top:10px;
+ background:#fff;
+ border-radius:30px;
+ padding:10px;
+ display:flex;
+ align-items:center;
+}
+
+.search input{
+ border:none;
+ outline:none;
+ flex:1;
+ font-size:14px;
+}
+
+/* BANNER */
+.banner{
+ display:flex;
+ overflow-x:auto;
+ gap:10px;
+ padding:10px;
+}
+
+.banner img{
+ width:260px;
+ border-radius:15px;
+}
+
+/* SECTION */
+.section{
+ padding:10px;
+}
+
+.section h3{
+ margin:5px 0;
+}
+
+/* APP CARD */
+.app-row{
+ display:flex;
+ overflow-x:auto;
+ gap:12px;
+}
+
+.app{
+ background:#1e293b;
+ padding:10px;
+ border-radius:15px;
+ min-width:110px;
+ text-align:center;
+}
+
+.app img{
+ width:70px;
+ height:70px;
+ border-radius:20px;
+}
+
+.name{
+ font-size:12px;
+ margin-top:5px;
+}
+
+.size{
+ font-size:11px;
+ color:#94a3b8;
+}
+
+.btn{
+ margin-top:5px;
+ padding:5px 10px;
+ border:none;
+ border-radius:20px;
+ background:linear-gradient(90deg,#22c55e,#4ade80);
+ color:#fff;
+ font-size:12px;
+}
+
+/* BOTTOM NAV */
+.nav{
+ position:fixed;
+ bottom:0;
+ width:100%;
+ max-width:480px;
+ display:flex;
+ justify-content:space-around;
+ background:#111827;
+ padding:10px;
+}
+
+.nav div{
+ font-size:12px;
+ color:#aaa;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">RIR MOD STORE</div>
+
+<div class="search">
+🔍 <input placeholder="Search apps...">
+</div>
+</header>
+
+<div class="banner" id="banner"></div>
+
+<div class="section">
+<h3>Top Apps</h3>
+<div class="app-row" id="apps"></div>
+</div>
+
+<div class="nav">
+<div>Home</div>
+<div>Games</div>
+<div>Apps</div>
+<div>Profile</div>
+</div>
+
+<script>
+let apps = JSON.parse(localStorage.getItem('apps')) || [
+ {name:"Facebook",icon:"https://cdn-icons-png.flaticon.com/512/124/124010.png",size:"45",link:"#"},
+ {name:"YouTube",icon:"https://cdn-icons-png.flaticon.com/512/1384/1384060.png",size:"60",link:"#"}
+];
+
+let banners = JSON.parse(localStorage.getItem('sliders')) || [
+ "https://via.placeholder.com/300x150",
+ "https://via.placeholder.com/300x150"
+];
+
+function render(){
+ let appHTML='';
+ apps.forEach(a=>{
+ appHTML+=`
+ <div class="app">
+ <img src="${a.icon}">
+ <div class="name">${a.name}</div>
+ <div class="size">${a.size} MB</div>
+ <a href="${a.link}">
+ <button class="btn">Download</button>
+ </a>
+ </div>`;
+ });
+ document.getElementById('apps').innerHTML=appHTML;
+
+ let b='';
+ banners.forEach(s=> b+=`<img src="${s}">`);
+ document.getElementById('banner').innerHTML=b;
+}
+
+render();
+</script>
+
+</body>
+</html>

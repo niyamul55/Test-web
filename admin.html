@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Panel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+ margin:0;
+ font-family:'Poppins',sans-serif;
+ background:#0f172a;
+ color:#fff;
+ max-width:480px;
+ margin:auto;
+}
+
+/* HEADER */
+header{
+ padding:15px;
+ background:linear-gradient(90deg,#2563eb,#7c3aed);
+ border-bottom-left-radius:20px;
+ border-bottom-right-radius:20px;
+ text-align:center;
+ font-weight:600;
+}
+
+/* LOGIN */
+.login{
+ padding:20px;
+}
+
+.login input{
+ width:292px;
+ padding:12px;
+ border: 3px solid red;
+ border-radius:10px;
+ margin-bottom:10px;
+}
+
+.login button{
+ width:100%;
+ padding:12px;
+ border:none;
+ border-radius:10px;
+ background:linear-gradient(90deg,#22c55e,#4ade80);
+ color:#fff;
+}
+
+/* PANEL */
+.panel{
+ display:none;
+ padding:15px;
+}
+
+/* CARD */
+.card{
+ background:#1e293b;
+ padding:12px;
+ border-radius:15px;
+ margin-bottom:10px;
+}
+
+/* INPUT */
+input{
+ width:100%;
+ padding:10px;
+ margin:5px 0;
+ border:none;
+ border-radius:10px;
+}
+
+/* BUTTON */
+.btn{
+ width:100%;
+ padding:10px;
+ margin-top:5px;
+ border:none;
+ border-radius:10px;
+ background:linear-gradient(90deg,#2563eb,#7c3aed);
+ color:#fff;
+}
+
+/* APP LIST */
+.app-item{
+ background:#1e293b;
+ padding:10px;
+ border-radius:12px;
+ margin-top:10px;
+}
+
+.small-btn{
+ margin-top:5px;
+ padding:5px 10px;
+ border:none;
+ border-radius:8px;
+ background:#ef4444;
+ color:#fff;
+ font-size:12px;
+}
+
+.edit-btn{
+ background:#22c55e;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>Admin Panel</header>
+
+<!-- LOGIN -->
+<div class="login" id="loginBox">
+<input id="pass" placeholder="Enter Password">
+<button onclick="login()">Login</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="panel" id="panel">
+
+<div class="card">
+<h3>Add / Edit App</h3>
+
+<input id="name" placeholder="App Name">
+<input id="icon" placeholder="Icon URL">
+<input id="link" placeholder="Drive Link">
+<input id="size" placeholder="App Size (MB)">
+
+<button class="btn" onclick="saveApp()">Save App</button>
+</div>
+
+<div class="card">
+<h3>Add Banner</h3>
+<input id="banner" placeholder="Banner Image URL">
+<button class="btn" onclick="addBanner()">Add Banner</button>
+</div>
+
+<div class="card">
+<h3>All Apps</h3>
+<div id="list"></div>
+</div>
+
+</div>
+
+<script>
+let apps = JSON.parse(localStorage.getItem('apps')) || [];
+let banners = JSON.parse(localStorage.getItem('sliders')) || [];
+
+let editIndex = -1;
+
+function save(){
+ localStorage.setItem('apps', JSON.stringify(apps));
+ localStorage.setItem('sliders', JSON.stringify(banners));
+ render();
+}
+
+function login(){
+ if(pass.value === '271187Ri'){
+  loginBox.style.display = 'none';
+  panel.style.display = 'block';
+  render();
+ } else {
+  alert('Wrong Password');
+ }
+}
+
+function saveApp(){
+ let app = {
+  name: name.value,
+  icon: icon.value,
+  link: link.value,
+  size: size.value
+ };
+
+ if(editIndex === -1){
+  apps.push(app);
+ } else {
+  apps[editIndex] = app;
+  editIndex = -1;
+ }
+
+ clearForm();
+ save();
+}
+
+function clearForm(){
+ name.value = '';
+ icon.value = '';
+ link.value = '';
+ size.value = '';
+}
+
+function editApp(i){
+ let a = apps[i];
+ name.value = a.name;
+ icon.value = a.icon;
+ link.value = a.link;
+ size.value = a.size;
+ editIndex = i;
+}
+
+function deleteApp(i){
+ apps.splice(i,1);
+ save();
+}
+
+function addBanner(){
+ banners.push(banner.value);
+ banner.value = '';
+ save();
+}
+
+function render(){
+ let html = '';
+ apps.forEach((a,i)=>{
+ html += `
+ <div class="app-item">
+ <b>${a.name}</b> (${a.size} MB)<br>
+ <button class="small-btn edit-btn" onclick="editApp(${i})">Edit</button>
+ <button class="small-btn" onclick="deleteApp(${i})">Delete</button>
+ </div>`;
+ });
+ document.getElementById('list').innerHTML = html;
+}
+</script>
+
+</body>
+</html>
